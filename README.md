@@ -17,7 +17,7 @@ TL;DR: This KAN implementation achieves orders-of-magnitude faster training and 
 
 <!-- #### TL;DR: We accelerate KAN training by orders of magnitude and improve generalization by reparameterizing the linear spline with parallel scan and using a fast interpolation trick. -->
 
-#### How This Works
+### How This Works
 
 This implementation of KAN uses a linear (C⁰) spline, with uniformly spaced control points (see Figure 1).
 
@@ -62,12 +62,12 @@ https://github.com/user-attachments/assets/3488606a-5d8f-4c03-aa7e-64356eb9bf37
 
 <!-- <img style="height: 60px" alt="ReLU-spline Formula" src="https://latex.codecogs.com/png.image?\dpi{400}\bg_white\large\displaystyle%20S(x)%20=%20\sum_{\ell=0}^{N-1}%20\left[%20w^+_{\ell}%20\cdot%20ReLU(x%20-%20b_{\ell})%20+%20w^-_{\ell}%20\cdot%20ReLU(b_{\ell}%20-%20x)%20\right]"> -->
 
-#### Short Random Thoughts
+### Short Random Thoughts
 - KAN suffers from training difficulties, which includes the training speed and the ill-conditioning of solution space
 - Local support leads to ill-conditioning and exploration of high complexity solutions
 - ReLU-based spline with its semi-global support, although is just theoretically as expressive as B-spline, biases learning towards simpler and more global, generalizable structures before exploring more complex solutions while B-splines do not have that property when overparameterized. Or, in other words, learning functions progressively, increasing in complexity from very simple form initially.
 
-#### TODO:
+### TODO:
 - Add baselines comparing ReLU-based spline, B-spline, and MLP with same number of parameters
 - Add ReLU spline figure
 - Add gifs or videos showing the training process with and without reparameterization
