@@ -7,7 +7,7 @@
 
 <!-- ## TL;DR: This KAN implementation achieves orders-of-magnitude faster training and better generalization by reparameterizing linear B-splines into cumulative ReLU-based splines and leveraging parallel scan and lookup-based interpolation. -->
 
-### TL;DR: This KAN implementation achieves orders-of-magnitude faster training and better generalization by reparameterizing linear B-splines into cumulative ReLU-based splines. Training is accelerated via leveraging parallel scan for reparameterization and fast interpolation via parameter lookup between the two nearest basis functions.
+TL;DR: This KAN implementation achieves orders-of-magnitude faster training and better generalization by reparameterizing linear B-splines into cumulative ReLU-based splines. Training is accelerated via leveraging parallel scan for reparameterization and fast interpolation via parameter lookup between the two nearest basis functions.
 
 <!-- ## TL;DR: This KAN implementation improves training speed by orders of magnitude, along with better conditioning and generalization, by reparameterizing linear B-splines into cumulative ReLU-based splines and using parallel scan and lookup-based interpolation. -->
  
