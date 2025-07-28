@@ -1,4 +1,4 @@
-# KANditioned: Fast, Generalizable Training of KANs via Lookup Interpolation and Parallel Scan Reparameterization
+## KANditioned: Fast, Generalizable Training of KANs via Lookup Interpolation and Parallel Scan Reparameterization
 <!-- # Fast and generalizable training of Kolmogorov-Arnold Network (KAN) via look up tables and prefix-sum reparameterization.  -->
 
 <!-- ### TL;DR: This KAN implementation uses a linear spline with uniformly spaced control points and reparameterizes from a B-spline to a cumulative ReLU-based spline for better optimization conditioning. Training is accelerated using a parallel prefix-sum and fast interpolation via parameter lookup between the two nearest basis functions. -->
