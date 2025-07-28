@@ -19,9 +19,8 @@
 
 This implementation of KAN uses a linear (C⁰) spline, with uniformly spaced control points (see Figure 1).
 
-![Linear B-spline example](image-1.png)
-
 **Figure 1.** Linear B-spline example:  
+![Linear B-spline example](image-1.png)
 
 To improve the conditioning of the optimization problem, the spline is reparameterized from the B-spline basis as proposed in the original paper (see Equation 1), which has strictly local support, to a cumulative ReLU spline formulation (see Equation 2). 
 
