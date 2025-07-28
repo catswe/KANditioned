@@ -40,9 +40,17 @@ This reparameterization is implemented via a parallel scan (prefix sum) with O(l
 
 **(1)** Training of ReLU-based spline with 1k parameters:
 
+
+https://github.com/user-attachments/assets/032e686f-a08d-48f3-bfcc-11fb53eca21e
+
+
 <video src="training_animation_conditioned.mp4" controls></video>
 
 **(2)** Training of linear B-spline with 1k parameters:
+
+
+https://github.com/user-attachments/assets/3488606a-5d8f-4c03-aa7e-64356eb9bf37
+
 
 <video src="training_animation_ill_conditioned.mp4" controls></video>
 
