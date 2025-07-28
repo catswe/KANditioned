@@ -69,6 +69,7 @@ https://github.com/user-attachments/assets/3488606a-5d8f-4c03-aa7e-64356eb9bf37
 
 ### TODO:
 - Add installation pip package and figures showing the visualize interp tensor as well as the example
+- Update with appropriate EMA for min and max
 - Add baselines comparing ReLU-based spline, B-spline, and MLP with same number of parameters
 - Add ReLU spline figure
 - Add gifs or videos showing the training process with and without reparameterization
