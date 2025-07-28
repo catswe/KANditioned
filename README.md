@@ -24,15 +24,15 @@ This implementation of KAN uses a linear (C⁰) spline, with uniformly spaced co
 
 To improve the conditioning of the optimization problem, the spline is reparameterized from the B-spline basis as proposed in the original paper (see Equation 1), which has strictly local support, to a cumulative ReLU spline formulation (see Equation 2). In this formulation, each parameter contributes via a ReLU term with support extending in one direction from its associated breakpoint b<sub>l</sub>, yielding semi-global, rather than local, influence. As each parameter update causes semi-global changes in the spline shape, this biases learning towards simpler, more generalizable structure, as opposed to fragile, local representations, while preserving the same theoretical expressitivity.
 
-**Equation 1.** B-spline formula:
+> **Equation 1.** B-spline formula:
 
-<img style="height: 50px" alt="B-spline Formula" src="image.png">
+> <img style="height: 50px" alt="B-spline Formula" src="image.png">
 
 
 
-**Equation 2.** ReLU-spline formula:
+> **Equation 2.** ReLU-spline formula:
 
-<img style="height: 50px" alt="ReLU-spline Formula" src="image-2.png">
+> <img style="height: 50px" alt="ReLU-spline Formula" src="image-2.png">
 
 This reparameterization is implemented via a parallel scan (prefix sum) with O(log N) time complexity and O(N) work complexity, where N is the number of parameters, independent of batch size. For more details, see Equation 2. Training speed was further improved by orders of magnitude by exploiting the fact that under the uniformly spaced control points with linear basis spline formulation, spline(x) can be efficiently evaluated by calculating the index of the two nearest control points, gather, and linearly interpolating between them, rather than summing over all basis functions. At a certain point, scaling the number of control points do not cause any noticeable increase in computation time, as most of the time is spent waiting for the parameter gather, which is still significantly more efficient than summing over all basis functions. 
 
@@ -44,12 +44,12 @@ This reparameterization is implemented via a parallel scan (prefix sum) with O(l
 https://github.com/user-attachments/assets/032e686f-a08d-48f3-bfcc-11fb53eca21e
 
 
-<video src="training_animation_conditioned.mp4" controls></video>
+<!-- <video src="training_animation_conditioned.mp4" controls></video> -->
 
 **(2)** Training of linear B-spline with 1k parameters:
 
 
-https://github.com/user-attachments/assets/3488606a-5d8f-4c03-aa7e-64356eb9bf37
+<!-- https://github.com/user-attachments/assets/3488606a-5d8f-4c03-aa7e-64356eb9bf37 -->
 
 
 <video src="training_animation_ill_conditioned.mp4" controls></video>
