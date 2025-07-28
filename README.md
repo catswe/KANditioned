@@ -25,10 +25,13 @@ This implementation of KAN uses a linear (C⁰) spline, with uniformly spaced co
 To improve the conditioning of the optimization problem, the spline is reparameterized from the B-spline basis as proposed in the original paper (see Equation 1), which has strictly local support, to a cumulative ReLU spline formulation (see Equation 2). 
 
 **Equation 1.** B-spline formula:  
-<img style="height: 40px" alt="B-spline Formula" src="image.png">
+<img style="height: 50px" alt="B-spline Formula" src="image.png">
+
+
+**Equation 2.** ReLU-spline formula:
+<img style="height: 50px" alt="ReLU-spline Formula" src="image-2.png">
 
 In this formulation, each parameter contributes via a ReLU term with support extending in one direction from its associated breakpoint b<sub>l</sub>, yielding semi-global, rather than local, influence. As each parameter update causes semi-global changes in the spline shape, this biases learning towards simpler, more generalizable structure, as opposed to fragile, local representations, while preserving the same theoretical expressitivity. This reparameterization is implemented via a parallel scan (prefix sum) with O(log N) time complexity and O(N) work complexity, where N is the number of parameters, independent of batch size. For more details, see Equation 2. Training speed was further improved by orders of magnitude by exploiting the fact that under the uniformly spaced control points with linear basis spline formulation, spline(x) can be efficiently evaluated by calculating the index of the two nearest control points, gather, and linearly interpolating between them, rather than summing over all basis functions. At a certain point, scaling the number of control points do not cause any noticeable increase in computation time, as most of the time is spent waiting for the parameter gather, which is still significantly more efficient than summing over all basis functions. 
-
 
 <!-- This implementation of KAN uses a linear (C⁰) spline, with uniformly spaced control points (see Figure 1). To improve the conditioning of the optimization problem, the spline is reparameterized from the B-spline basis as proposed in the original paper (see Equation 1), which has strictly local support, to a cumulative ReLU-based spline formulation (see Equation 2). In this formulation, each parameter contributes via a ReLU term with support extending in one direction from its associated breakpoint b<sub>l</sub>, yielding semi-global, rather than local, influence. This reparameterization is implemented via a parallel scan (prefix sum) with O(log N) time complexity, where N is the number of parameters, independent of batch size. Training speed was further improved by orders of magnitude by exploiting the fact that under the linear basis spline formulation, spline(x) can be efficiently calculated by looking up the parameters of the two nearest linear bases and linearly interpolating between them, rather than summing over all basis functions. -->
 
@@ -42,17 +45,7 @@ In this formulation, each parameter contributes via a ReLU term with support ext
 
 <!-- instead of optimizing the spline under the B-spline parameterization (see Equation 1), it is reparameterized and directly optimized under the [insert ReLU formulation], where each parameter now affects the spline globally, rather than having strictly local support. The reparameterization is done using parallel scan (prefix sum) with O(log N) time complexity, where N is the number of parameters, independent of batch size. The number of computations can be further reduced by recognizing that under the linear basis spline formulation, spline(x) can be efficiently calculated by looking up the parameters of the two nearest linear bases and linearly interpolating between them. -->
 
-### Figures
-
-### Equations
-
-**(1)** B-spline formulation:
-
 <!-- <img style="height: 60px" alt="B-spline Formula" src="https://latex.codecogs.com/png.image?\dpi{400}\bg_white\large\displaystyle S(x)%20=%20\sum_{i=0}^{n}%20c_i%20B_{i,k}(x)%20\qquad%20B_{i,0}(x)%20=%20\begin{cases}1%20&%20\text{if%20}%20t_i%20\leq%20x%20%3C%20t_{i+1}\\0%20&%20\text{otherwise}\end{cases}%20\qquad%20B_{i,k}(x)%20=%20\frac{x%20-%20t_i}{t_{i+k}%20-%20t_i}%20B_{i,k-1}(x)%20+%20\frac{t_{i+k+1}%20-%20x}{t_{i+k+1}%20-%20t_{i+1}}%20B_{i+1,k-1}(x)"> -->
-
-**(2)** ReLU-spline formulation:
-
-<img style="height: 60px" alt="ReLU-spline Formula" src="image-2.png">
 
 <!-- <img style="height: 60px" alt="ReLU-spline Formula" src="https://latex.codecogs.com/png.image?\dpi{400}\bg_white\large\displaystyle%20S(x)%20=%20\sum_{\ell=0}^{N-1}%20\left[%20w^+_{\ell}%20\cdot%20ReLU(x%20-%20b_{\ell})%20+%20w^-_{\ell}%20\cdot%20ReLU(b_{\ell}%20-%20x)%20\right]"> -->
 
