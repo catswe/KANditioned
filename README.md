@@ -77,3 +77,4 @@ https://github.com/user-attachments/assets/3488606a-5d8f-4c03-aa7e-64356eb9bf37
 - Revisit the writing to be more polished later
 - Write optimized Triton kernel
 - Put up Google Colab Notebooks
+- Add a warning about needing appropriate learning rate, batch norm, and initialization
