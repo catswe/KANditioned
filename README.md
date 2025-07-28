@@ -15,7 +15,7 @@
 
 <!-- ## TL;DR: We speed up KAN training by orders of magnitude and improve generalization using a better spline formulation and fast interpolation trick. -->
 
-<!-- ### TL;DR: We accelerate KAN training by orders of magnitude and improve generalization by reparameterizing the linear spline with parallel scan and using a fast interpolation trick. -->
+#### TL;DR: We accelerate KAN training by orders of magnitude and improve generalization by reparameterizing the linear spline with parallel scan and using a fast interpolation trick.
 
 This implementation of KAN uses a linear (C⁰) spline, with uniformly spaced control points (see Figure 1).
 
