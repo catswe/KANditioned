@@ -49,10 +49,10 @@ https://github.com/user-attachments/assets/032e686f-a08d-48f3-bfcc-11fb53eca21e
 **(2)** Training of linear B-spline with 1k parameters:
 
 
-<!-- https://github.com/user-attachments/assets/3488606a-5d8f-4c03-aa7e-64356eb9bf37 -->
+https://github.com/user-attachments/assets/3488606a-5d8f-4c03-aa7e-64356eb9bf37
 
 
-<video src="training_animation_ill_conditioned.mp4" controls></video>
+<!-- <video src="training_animation_ill_conditioned.mp4" controls></video> -->
 
 <!-- instead of optimizing the spline under the B-spline parameterization (see Equation 1), it is reparameterized and directly optimized under the [insert ReLU formulation], where each parameter now affects the spline globally, rather than having strictly local support. The reparameterization is done using parallel scan (prefix sum) with O(log N) time complexity, where N is the number of parameters, independent of batch size. The number of computations can be further reduced by recognizing that under the linear basis spline formulation, spline(x) can be efficiently calculated by looking up the parameters of the two nearest linear bases and linearly interpolating between them. -->
 
@@ -60,12 +60,12 @@ https://github.com/user-attachments/assets/032e686f-a08d-48f3-bfcc-11fb53eca21e
 
 <!-- <img style="height: 60px" alt="ReLU-spline Formula" src="https://latex.codecogs.com/png.image?\dpi{400}\bg_white\large\displaystyle%20S(x)%20=%20\sum_{\ell=0}^{N-1}%20\left[%20w^+_{\ell}%20\cdot%20ReLU(x%20-%20b_{\ell})%20+%20w^-_{\ell}%20\cdot%20ReLU(b_{\ell}%20-%20x)%20\right]"> -->
 
-### Short Random Thoughts
+#### Short Random Thoughts
 - KAN suffers from training difficulties, which includes the training speed and the ill-conditioning of solution space
 - Local support leads to ill-conditioning and exploration of high complexity solutions
 - ReLU-based spline with its semi-global support, although is just theoretically as expressive as B-spline, biases learning towards simpler and more global, generalizable structures before exploring more complex solutions while B-splines do not have that property when overparameterized. Or, in other words, learning functions progressively, increasing in complexity from very simple form initially.
 
-### TODO:
+#### TODO:
 - Add baselines comparing ReLU-based spline, B-spline, and MLP with same number of parameters
 - Add ReLU spline figure
 - Add gifs or videos showing the training process with and without reparameterization
