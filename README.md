@@ -68,6 +68,7 @@ https://github.com/user-attachments/assets/3488606a-5d8f-4c03-aa7e-64356eb9bf37
 - ReLU-based spline with its semi-global support, although is just theoretically as expressive as B-spline, biases learning towards simpler and more global, generalizable structures before exploring more complex solutions while B-splines do not have that property when overparameterized. Or, in other words, learning functions progressively, increasing in complexity from very simple form initially.
 
 ### TODO:
+- Add installation pip package and figures showing the visualize interp tensor as well as the example
 - Add baselines comparing ReLU-based spline, B-spline, and MLP with same number of parameters
 - Add ReLU spline figure
 - Add gifs or videos showing the training process with and without reparameterization
