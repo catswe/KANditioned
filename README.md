@@ -1,4 +1,5 @@
-## KANditioned: Fast, Generalizable Training of KANs via Lookup Interpolation and Parallel Scan Reparameterization
+## KANditioned: Fast, Generalizable Training of KANs via Lookup Interpolation and FFT Convolution
+
 <!-- # Fast and generalizable training of Kolmogorov-Arnold Network (KAN) via look up tables and prefix-sum reparameterization.  -->
 
 <!-- ### TL;DR: This KAN implementation uses a linear spline with uniformly spaced control points and reparameterizes from a B-spline to a cumulative ReLU-based spline for better optimization conditioning. Training is accelerated using a parallel prefix-sum and fast interpolation via parameter lookup between the two nearest basis functions. -->
@@ -7,7 +8,9 @@
 
 <!-- ## TL;DR: This KAN implementation achieves orders-of-magnitude faster training and better generalization by reparameterizing linear B-splines into cumulative ReLU-based splines and leveraging parallel scan and lookup-based interpolation. -->
 
-TL;DR: We achieved orders-of-magnitude faster training and improved conditioning by reparameterizing linear B-splines into cumulative ReLU splines. Training is accelerated via leveraging parallel scan for reparameterization and fast interpolation via parameter lookup between two nearest control points.
+<!-- TL;DR: We achieved orders-of-magnitude faster training and improved conditioning by reparameterizing linear B-splines into cumulative ReLU splines. Training is accelerated via leveraging parallel scan for reparameterization and fast interpolation via parameter lookup between two nearest control points. -->
+
+TL;DR: Training is accelerated by orders of magnitude through exploiting the structure of linear (C⁰) spline with uniformly spaced control points, where spline(x) can be calculated as a linear interpolation between the two nearest control points. This is in constrast with the typical summation often seen in B-spline, reducing the amount of computation required. Optimization ill-conditioning is mitigated through regularizing/reparameterizing by applying a Gaussian smoothing kernel on the parameters using FFT convolution. This has a time complexity of O(N log N), with a depth of O(log N), where N is the number of parameters. This technique is inspired by Batch Normalization, where both employ a differentiable transformation to improve problem conditioning, albeit this technique is applied to parameters rather than activations. Although the time complexity of DCT is O(N log N), with a depth of O(log N), this is independent of batch size, making the proximal step negligible as the batch size or number of control points increases. 
 
 <!-- ## TL;DR: This KAN implementation improves training speed by orders of magnitude, along with better conditioning and generalization, by reparameterizing linear B-splines into cumulative ReLU-based splines and using parallel scan and lookup-based interpolation. -->
  
@@ -69,12 +72,14 @@ https://github.com/user-attachments/assets/3488606a-5d8f-4c03-aa7e-64356eb9bf37
 
 ### TODO:
 - Add installation pip package and figures showing the visualize interp tensor as well as the example
-- Update with appropriate EMA for min and max
-- Add baselines comparing ReLU-based spline, B-spline, and MLP with same number of parameters
-- Add ReLU spline figure
-- Add gifs or videos showing the training process with and without reparameterization
-- Add the steps to go from ReLU-spline formulation to prefix-sum
+<!-- - Update with appropriate EMA for min and max -->
+- Add baselines comparing current spline implementation, B-spline, and MLP with same number of parameters
+<!-- - Add ReLU spline figure -->
+<!-- - Add gifs or videos showing the training process with and without reparameterization -->
+- Add gifs or videos showing the training process
+<!-- - Add the steps to go from ReLU-spline formulation to prefix-sum -->
 - Revisit the writing to be more polished later
 - Write optimized Triton kernel
 - Put up Google Colab Notebooks
-- Add a warning about needing appropriate learning rate, batch norm, and initialization
+- Add a warning about needing appropriate learning rate, batch norm, and initialization. Recommended to put a range at -2 to 2
+- Add a line about exploiting the structure in KAN
