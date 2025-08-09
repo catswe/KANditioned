@@ -1,4 +1,4 @@
-## KANditioned: Fast, Generalizable Training of KANs via Lookup Interpolation and FFT Convolution
+## KANditioned: Fast, Generalizable Training of KANs via Lookup Interpolation and Proximal Gradient
 
 <!-- # Fast and generalizable training of Kolmogorov-Arnold Network (KAN) via look up tables and prefix-sum reparameterization.  -->
 
