@@ -85,3 +85,4 @@ https://github.com/user-attachments/assets/3488606a-5d8f-4c03-aa7e-64356eb9bf37
 - Add a line about exploiting the structure in KAN
 - Add something about Gaussian kernel smoothing and discrete heat/diffusion equation
 - Add a line about batchnorm and spline range
+- Add a line about provable convergence of proximal gradient
