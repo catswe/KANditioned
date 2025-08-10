@@ -83,3 +83,5 @@ https://github.com/user-attachments/assets/3488606a-5d8f-4c03-aa7e-64356eb9bf37
 - Put up Google Colab Notebooks
 - Add a warning about needing appropriate learning rate, batch norm, and initialization. Recommended to put a range at -2 to 2
 - Add a line about exploiting the structure in KAN
+- Add something about Gaussian kernel smoothing and discrete heat/diffusion equation
+- Add a line about batchnorm and spline range
