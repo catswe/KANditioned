@@ -89,3 +89,6 @@ https://github.com/user-attachments/assets/3488606a-5d8f-4c03-aa7e-64356eb9bf37
 - Check difference in torch.compile between nn.Embedding and F.embedding
 - Check difference between feature-major order versus batch-major order
 - Add a license (probably MIT)
+- Add a line about using torch.compile
+- Add baselines on backward and forward passes
+- Add a note on this can scale with number of control points very easily
