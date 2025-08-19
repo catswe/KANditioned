@@ -9,7 +9,7 @@ pip install kanditioned
 ```
 
 ## Usage
-It is highly highly recommended to use this layer with torch.compile, which will provide very significant speedups. Each spline's domain is from 0 to num_control_points - 1. It is also highly recommended to use a normalization layer before each KANLayer.
+It is highly highly recommended to use this layer with torch.compile, which will provide very significant speedups, in addition to a normalization layer before each KANLayer.
 
 ```
 from kanditioned.kan_layer import KANLayer
