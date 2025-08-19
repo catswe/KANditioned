@@ -46,7 +46,7 @@ This implementation of KAN uses a linear (C⁰) spline, with uniformly spaced co
 > <img style="height: 50px" alt="B-spline Formula" src="https://raw.githubusercontent.com/cats-marin/KANditioned/main/image.png">
 
 ## Roadmap
-- Update package with cleaned up, efficient Discrete Cosine Transform and parallel scan (prefix sum) reparameterizations. Both provide isotropic κ ~ O(1) discrete second difference penalty, as opposed to κ ~ O(N^4) for naive B-spline parameterization. This only matters if you care about regularization.
+- Update package with cleaned up, efficient Discrete Cosine Transform and parallel scan (prefix sum) reparameterizations. Both provide isotropic κ ~ O(1) conditioned discrete second difference penalty, as opposed to κ ~ O(N^4) conditioning for naive B-spline parameterization. This only matters if you care about regularization.
 - Proper baselines against MLP and various other KAN implementations on backward and forward passes
     <!-- - https://github.com/ZiyaoLi/fast-kan -->
     <!-- - https://github.com/Blealtan/efficient-kan -->
@@ -56,7 +56,6 @@ This implementation of KAN uses a linear (C⁰) spline, with uniformly spaced co
     <!-- https://github.com/KindXiaoming/pykan -->
     <!-- https://github.com/mintisan/awesome-kan -->
 - Add in feature-major variant
-- Add bias, spline range, and normalization parameters
 - Add optimized Triton kernel
 - Clean up writing
 
