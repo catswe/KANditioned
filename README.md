@@ -64,6 +64,8 @@ https://github.com/user-attachments/assets/3488606a-5d8f-4c03-aa7e-64356eb9bf37
 <!-- <img style="height: 60px" alt="B-spline Formula" src="https://latex.codecogs.com/png.image?\dpi{400}\bg_white\large\displaystyle S(x)%20=%20\sum_{i=0}^{n}%20c_i%20B_{i,k}(x)%20\qquad%20B_{i,0}(x)%20=%20\begin{cases}1%20&%20\text{if%20}%20t_i%20\leq%20x%20%3C%20t_{i+1}\\0%20&%20\text{otherwise}\end{cases}%20\qquad%20B_{i,k}(x)%20=%20\frac{x%20-%20t_i}{t_{i+k}%20-%20t_i}%20B_{i,k-1}(x)%20+%20\frac{t_{i+k+1}%20-%20x}{t_{i+k+1}%20-%20t_{i+1}}%20B_{i+1,k-1}(x)"> -->
 
 <!-- <img style="height: 60px" alt="ReLU-spline Formula" src="https://latex.codecogs.com/png.image?\dpi{400}\bg_white\large\displaystyle%20S(x)%20=%20\sum_{\ell=0}^{N-1}%20\left[%20w^+_{\ell}%20\cdot%20ReLU(x%20-%20b_{\ell})%20+%20w^-_{\ell}%20\cdot%20ReLU(b_{\ell}%20-%20x)%20\right]"> -->
+### LICENSE
+This project is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt).
 
 ### Short Random Thoughts
 - KAN suffers from training difficulties, which includes the training speed and the ill-conditioning of solution space
@@ -71,6 +73,7 @@ https://github.com/user-attachments/assets/3488606a-5d8f-4c03-aa7e-64356eb9bf37
 - ReLU-based spline with its semi-global support, although is just theoretically as expressive as B-spline, biases learning towards simpler and more global, generalizable structures before exploring more complex solutions while B-splines do not have that property when overparameterized. Or, in other words, learning functions progressively, increasing in complexity from very simple form initially.
 
 ### TODO:
+- Add roadmap in
 - Add installation pip package and figures showing the visualize interp tensor as well as the example
 <!-- - Update with appropriate EMA for min and max -->
 - Add baselines comparing current spline implementation, B-spline, and MLP with same number of parameters
