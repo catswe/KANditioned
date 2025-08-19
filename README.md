@@ -92,3 +92,8 @@ https://github.com/user-attachments/assets/3488606a-5d8f-4c03-aa7e-64356eb9bf37
 - Add a line about using torch.compile
 - Add baselines on backward and forward passes
 - Add a note on this can scale with number of control points very easily
+- Add n^4 ill conditioning
+- Add isotropic penalty
+- Add different variants, regular, DCT, and prefix sum
+- Add feature-major order variant
+- Add batchnorm with range in
