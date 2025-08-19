@@ -17,7 +17,7 @@ layer = KANLayer(in_features=3, out_features=3, init="random_normal", num_contro
 layer.visualize_all_mappings(save_path="kan_mappings.png")
 ```
 
-It is highly recommended to use this layer with torch.compile, which will provide very significant speedups. Each spline's domain is from 0 to num_control_points - 1. It is also highly recommended to use a normalization layer before each KANLayer
+**It is highly highly recommended to use this layer with torch.compile, which will provide very significant speedups. Each spline's domain is from 0 to num_control_points - 1. It is also highly recommended to use a normalization layer before each KANLayer.**
 
 ### Args:
 
