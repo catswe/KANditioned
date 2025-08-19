@@ -19,9 +19,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class KANLayer(nn.Module):
-    def __init__(self, in_features: int, out_features: int, init: str, num_control_points: int):
+    def __init__(self, in_features: int, out_features: int, init: str, num_control_points: int = 32, spline_width: float = 4.0):
         super().__init__()
-        self.in_features, self.out_features, self.num_control_points = in_features, out_features, num_control_points
+        self.in_features, self.out_features, self.num_control_points, self.spline_width = in_features, out_features, num_control_points, spline_width
         self.kan_weight = nn.Parameter(torch.zeros(in_features, num_control_points, out_features))
 
         self.register_buffer("local_bias", torch.arange(num_control_points).view(1, -1, 1))
@@ -46,7 +46,8 @@ class KANLayer(nn.Module):
 
     def forward(self, x):
         # x: (batch_size, in_features)
-        
+        x = (x + self.spline_width / 2) * (self.num_control_points - 1) / self.spline_width
+
         lower_indices_float = x.floor().clamp(0, self.num_control_points - 2) # (batch_size, in_features)
         lower_indices = lower_indices_float.long() + self.feature_offset # (batch_size, in_features)
 
