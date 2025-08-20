@@ -1,4 +1,4 @@
-# KANditioned: Fast, Generalizable Training of KANs via Lookup Interpolation
+# KANditioned: Fast, Conditioned Training of KANs via Lookup Interpolation and Discrete Cosine Transform
 
 Training is accelerated by orders of magnitude through exploiting the structure of linear (C⁰) spline with uniformly spaced control points, where spline(x) can be calculated as a linear interpolation between the two nearest control points. This is in constrast with the typical summation often seen in B-spline, reducing the amount of computation required and enabling effectively sublinear scaling across the control points dimension.
 
@@ -9,7 +9,7 @@ pip install kanditioned
 ```
 
 ## Usage
-It is highly highly recommended to use this layer with torch.compile, which will provide very significant speedups, in addition to a normalization layer before each KANLayer.
+It is highlyf recommended to use this layer with torch.compile, which will provide very significant speedups, in addition to a normalization layer before each KANLayer.
 
 ```
 from kanditioned.kan_layer import KANLayer
@@ -42,6 +42,41 @@ This implementation of KAN uses a linear (C⁰) spline, with uniformly spaced co
 ![Linear B-spline example](https://raw.githubusercontent.com/cats-marin/KANditioned/main/image-1.png)
 
 **Equation 1.** B-spline formula:
+$$
+S(x) = \sum_{i=0}^n c_i B_{i,1}(x)
+$$
+
+$$
+B_{i,1}(x) =
+\begin{cases}
+\dfrac{x - t_i}{t_{i+1} - t_i}, & t_i \le x < t_{i+1}, \\
+\dfrac{t_{i+2} - x}{t_{i+2} - t_{i+1}}, & t_{i+1} \le x < t_{i+2}, \\
+0, & \text{otherwise}.
+\end{cases}
+$$
+
+<div style="display:inline-block; margin-right:40px;">
+
+$$
+S(x) = \sum_{i=0}^n c_i B_{i,1}(x)
+$$
+
+</div>
+<div style="display:inline-block;">
+
+$$
+B_{i,1}(x) =
+\begin{cases}
+\dfrac{x - t_i}{t_{i+1} - t_i}, & t_i \le x < t_{i+1}, \\
+\dfrac{t_{i+2} - x}{t_{i+2} - t_{i+1}}, & t_{i+1} \le x < t_{i+2}, \\
+0, & \text{otherwise}.
+\end{cases}
+$$
+
+</div>
+
+
+
 <img style="height: 50px" alt="B-spline Formula" src="https://raw.githubusercontent.com/cats-marin/KANditioned/main/image.png">
 
 ## Roadmap
