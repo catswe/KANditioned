@@ -16,8 +16,10 @@ class KANLayer(nn.Module):
         centered_bias = self.local_bias.float() - (num_control_points - 1) / 2.0 # type: ignore
 
         if init == 'random_normal':
-            slopes = torch.randn(in_features, out_features, device=self.kan_weight.device)
-            slopes /= slopes.norm(dim=0, keepdim=True).clamp_min(1e-12)
+            slopes = torch.nn.functional.normalize(
+                torch.randn(in_features, out_features, device=self.kan_weight.device),
+                dim=0,
+            )
         elif init == 'identity':
             if in_features != out_features:
                 raise ValueError("'identity' init requires in_features == out_features.")
