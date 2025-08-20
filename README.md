@@ -42,18 +42,6 @@ This implementation of KAN uses a linear (C⁰) spline, with uniformly spaced co
 ![Linear B-spline example](https://raw.githubusercontent.com/cats-marin/KANditioned/main/image-1.png)
 
 **Equation 1.** B-spline formula:
-$$
-S(x) = \sum_{i=0}^n c_i B_{i,1}(x)
-$$
-
-$$
-B_{i,1}(x) =
-\begin{cases}
-\dfrac{x - t_i}{t_{i+1} - t_i}, & t_i \le x < t_{i+1}, \\
-\dfrac{t_{i+2} - x}{t_{i+2} - t_{i+1}}, & t_{i+1} \le x < t_{i+2}, \\
-0, & \text{otherwise}.
-\end{cases}
-$$
 
 <div style="display:inline-block; margin-right:40px;">
 
