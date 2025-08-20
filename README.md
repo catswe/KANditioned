@@ -43,7 +43,7 @@ This implementation of KAN uses a linear (C⁰) spline, with uniformly spaced co
 
 **Equation 1.** B-spline formula:
 
-<div style="display:inline-block; margin-right:40px;">
+<div style="display:inline-block;">
 
 $$
 S(x) = \sum_{i=0}^n c_i B_{i,1}(x)
@@ -62,10 +62,6 @@ B_{i,1}(x) =
 $$
 
 </div>
-
-
-
-<img style="height: 50px" alt="B-spline Formula" src="https://raw.githubusercontent.com/cats-marin/KANditioned/main/image.png">
 
 ## Roadmap
 - Update package with cleaned up, efficient Discrete Cosine Transform and parallel scan (prefix sum) reparameterizations. Both provide isotropic κ ~ O(1) conditioned discrete second difference penalty, as opposed to κ ~ O(N^4) conditioning for naive B-spline parameterization. This only matters if you care about regularization.
