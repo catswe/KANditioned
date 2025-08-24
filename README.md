@@ -34,15 +34,9 @@ layer.visualize_all_mappings(save_path="kan_mappings.png")
 
     visualize_all_mappings(save_path=path[optional]) - this will plot out the shape of each spline and its corresponding input and output feature
 
-## How This Works
-
-This implementation of KAN uses a linear (C⁰) spline, with uniformly spaced control points (see Figure 1 and Equation 1).
-
-**Figure 1.** Linear B-spline example:  
-![Linear B-spline example](https://raw.githubusercontent.com/cats-marin/KANditioned/main/image-1.png)
+## Visuals
 
 **Equation 1.** Linear B-spline definition:
-
 $$
 \begin{aligned}
 S(x) &= \sum_{i=0}^n c_i B_{i,1}(x) 
@@ -55,6 +49,9 @@ B_{i,1}(x) &=
 \end{cases}
 \end{aligned}
 $$
+
+**Figure 1.** Linear B-spline example (each triangle-like shape is a basis):
+![Linear B-spline example](https://raw.githubusercontent.com/cats-marin/KANditioned/main/image-1.png)
 
 ## Roadmap
 - Update package with cleaned up, efficient Discrete Cosine Transform and parallel scan (prefix sum) parameterizations. Both provide isotropic O(1) condition scaling for the discrete second difference penalty, as opposed to O(N^4) conditioning for the naive B-spline parameterization. This only matters if you care about regularization.
