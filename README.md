@@ -52,7 +52,8 @@ Training is accelerated by orders of magnitude through exploiting the structure 
     <!-- https://github.com/mintisan/awesome-kan -->
 - Add in feature-major variant
 - Add optimized Triton kernel
-- Clean up writing
+- Add linearDCT variant
+- Polish writing
 
 ## LICENSE
 This project is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt).
