@@ -37,6 +37,7 @@ layer.visualize_all_mappings(save_path="kan_mappings.png")
 ## Visuals
 
 **Equation 1.** Linear B-spline definition:
+
 $$
 \begin{aligned}
 S(x) &= \sum_{i=0}^n c_i B_{i,1}(x) 
