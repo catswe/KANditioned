@@ -57,7 +57,7 @@ B_{i,1}(x) &=
 $$
 
 ## Roadmap
-- Update package with cleaned up, efficient Discrete Cosine Transform and parallel scan (prefix sum) reparameterizations. Both provide isotropic O(1) condition scaling for the discrete second difference penalty, as opposed to O(N^4) conditioning for the naive B-spline parameterization. This only matters if you care about regularization.
+- Update package with cleaned up, efficient Discrete Cosine Transform and parallel scan (prefix sum) parameterizations. Both provide isotropic O(1) condition scaling for the discrete second difference penalty, as opposed to O(N^4) conditioning for the naive B-spline parameterization. This only matters if you care about regularization.
 - Proper baselines against MLP and various other KAN implementations on backward and forward passes
     <!-- - https://github.com/ZiyaoLi/fast-kan -->
     <!-- - https://github.com/Blealtan/efficient-kan -->
