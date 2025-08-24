@@ -19,7 +19,7 @@ layer = KANLayer(in_features=3, out_features=3, init="random_normal", num_contro
 layer.visualize_all_mappings(save_path="kan_mappings.png")
 ```
 
-### Args:
+#### Args:
 
     in_features (int) – size of each input sample
     out_features (int) – size of each output sample
@@ -30,7 +30,7 @@ layer.visualize_all_mappings(save_path="kan_mappings.png")
     num_control_points (int): Number of uniformly spaced control points per input feature. Defaults to 32.
     spline_width (float): Width of the spline's domain [-spline_width / 2, spline_width / 2]. Defaults to 4.0.
 
-### Methods:
+#### Methods:
 
     visualize_all_mappings(save_path=path[optional]) - this will plot out the shape of each spline and its corresponding input and output feature
 
