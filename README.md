@@ -36,8 +36,8 @@ layer.visualize_all_mappings(save_path="kan_mappings.png")
 
 Training is accelerated by orders of magnitude through exploiting the structure of the linear (C⁰) B-spline (see Fig. 1) with uniformly spaced control points. Because the intervals are uniform, evaluating spline(x) reduces to a constant-time index calculation, followed by looking up the two relevant control points and linearly interpolating between them. This contrasts with the typical summation over basis functions typically seen in splines, reducing the amount of computation required and enabling effective sublinear scaling across the control points dimension.
 
-**Figure 1.** Linear B-spline example (each triangle-like shape is a basis):
 ![Linear B-spline example](https://raw.githubusercontent.com/cats-marin/KANditioned/main/image-1.png)
+**Figure 1.** Linear B-spline example (each triangle-like shape is a basis):
 
 ## Roadmap
 - Update package with cleaned up, efficient Discrete Cosine Transform and parallel scan (prefix sum) parameterizations. Both provide isotropic O(1) condition scaling for the discrete second difference penalty, as opposed to O(N^4) conditioning for the naive B-spline parameterization. This only matters if you care about regularization.
