@@ -36,21 +36,6 @@ layer.visualize_all_mappings(save_path="kan_mappings.png")
 
 ## Visuals
 
-**Equation 1.** Linear B-spline definition:
-
-$$
-\begin{aligned}
-S(x) &= \sum_{i=0}^n c_i B_{i,1}(x) 
-\qquad\qquad
-B_{i,1}(x) &=
-\begin{cases}
-\dfrac{x - t_i}{t_{i+1} - t_i}, & t_i \le x < t_{i+1}, \\
-\dfrac{t_{i+2} - x}{t_{i+2} - t_{i+1}}, & t_{i+1} \le x < t_{i+2}, \\
-0, & \text{otherwise}.
-\end{cases}
-\end{aligned}
-$$
-
 **Figure 1.** Linear B-spline example (each triangle-like shape is a basis):
 ![Linear B-spline example](https://raw.githubusercontent.com/cats-marin/KANditioned/main/image-1.png)
 
