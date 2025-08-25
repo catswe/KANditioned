@@ -18,33 +18,83 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+def _ensure_positive_int(name: str, value: int): # type: ignore
+    if not isinstance(value, int) or value <= 0:
+        raise ValueError(f"{name} must be a positive int, got {value}")
+
+def _ensure_in_set(name: str, value: str, allowed: set[str]):
+    if value not in allowed:
+        raise ValueError(f"{name} must be one of {allowed}, got {value}")
+
 class KANLayer(nn.Module):
-    def __init__(self, in_features: int, out_features: int, init: str, num_control_points: int = 32, spline_width: float = 4.0):
+    def __init__(
+            self,
+            in_features: int,
+            out_features: int,
+            init: str,
+            num_control_points: int = 32,
+            spline_width: float = 4.0,
+            variant: str="B-spline"
+    ) -> None:
         super().__init__()
-        self.in_features, self.out_features, self.num_control_points, self.spline_width = in_features, out_features, num_control_points, spline_width
-        self.kan_weight = nn.Parameter(torch.zeros(in_features, num_control_points, out_features))
+
+        _ensure_positive_int("in_features", in_features)
+        _ensure_positive_int("out_features", out_features)
+        _ensure_in_set("init", init, {"random_normal", "identity", "zero"})
+        if self.init == 'identity' and in_features != out_features:
+            raise ValueError("'identity' init requires in_features == out_features.")
+        _ensure_positive_int("num_control_points", num_control_points)
+        if not (isinstance(spline_width, (int, float)) and spline_width > 0):
+            raise ValueError(f"spline_width must be > 0, got {spline_width}")
+        _ensure_in_set("variant", variant, {"B-spline", "parallel_scan", "DCT"})
+        if variant == "DCT":
+            raise NotImplementedError("DCT variant is not implemented.")
+
+        self.in_features = in_features
+        self.out_features = out_features
+        self.init = init
+        self.num_control_points = num_control_points
+        self.spline_width = spline_width
+        self.variant = variant
 
         self.register_buffer("local_bias", torch.arange(num_control_points).view(1, -1, 1))
         self.register_buffer("feature_offset", torch.arange(in_features).view(1, -1) * num_control_points)
 
-        centered_bias = self.local_bias.float() - (num_control_points - 1) / 2.0 # type: ignore
+    def get_interp_tensor(self):
+        if self.variant == "B-spline":
+            self.kan_weight.view(-1, self.out_features)
+        elif self.variant == "parallel_scan":
+            cs_r_weight = torch.cumsum(self.r_weight, dim=1) # (in_features, num_control_points, out_features)
+            cs_l_weight = torch.cumsum(self.l_weight, dim=1) # (in_features, num_control_points, out_features)
 
-        if init == 'random_normal':
-            slopes = torch.nn.functional.normalize(
-                torch.randn(in_features, out_features, device=self.kan_weight.device),
-                dim=0,
-            )
-        elif init == 'identity':
-            if in_features != out_features:
-                raise ValueError("'identity' init requires in_features == out_features.")
-            slopes = torch.eye(in_features, device=self.kan_weight.device)
-        elif init != 'zero':
-            raise ValueError("init must be 'random_normal', 'identity', or 'zero'.")
-        else:
-            return
+            cs_r_weight_bias_prod = torch.cumsum(self.r_weight * self.local_bias, dim=1) # (in_features, num_control_points, out_features)
+            cs_l_weight_bias_prod = torch.cumsum(self.l_weight * self.local_bias, dim=1) # (in_features, num_control_points, out_features)
 
-        with torch.no_grad():
-            self.kan_weight.copy_(centered_bias * slopes.unsqueeze(1))
+            r_interp = (self.local_bias * cs_r_weight - cs_r_weight_bias_prod) # type: ignore (in_features, num_control_points, out_features)
+            l_interp = (cs_l_weight_bias_prod[:, -1:, :] - cs_l_weight_bias_prod) - self.local_bias * (cs_l_weight[:, -1:, :] - cs_l_weight) # type: ignore (in_features, num_control_points, out_features)
+            return (r_interp + l_interp).view(-1, self.out_features) # (in_features * num_control_points, out_features)
+
+        raise ValueError("Variant must be either 'B-spline', 'parallel_scan', or 'DCT")
+
+    def init_tensor(self):
+        if self.variant == "B-spline":
+            centered_bias = self.local_bias.float() - (self.num_control_points - 1) / 2.0
+
+            if self.init == 'random_normal':
+                slopes = torch.nn.functional.normalize(
+                    torch.randn(self.in_features, self.out_features, device=self.kan_weight.device),
+                    dim=0,
+                )
+            elif self.init == 'identity':
+                slopes = torch.eye(self.in_features, device=self.kan_weight.device)
+            elif self.init == 'zero':
+                slopes = torch.zeros(self.in_features, self.num_control_points, self.out_features)
+
+            with torch.no_grad():
+                self.kan_weight = nn.Parameter(centered_bias * slopes.unsqueeze(1))
+        elif self.variant == "parallel_scan":
+            self.r_weight = nn.Parameter(torch.zeros(self.in_features, self.num_control_points, self.out_features)) # (in_features, num_control_points, out_features)
+            self.l_weight = nn.Parameter(torch.zeros(self.in_features, self.num_control_points, self.out_features)) # (in_features, num_control_points, out_features)        
 
     def forward(self, x):
         # x: (batch_size, in_features)
@@ -54,13 +104,13 @@ class KANLayer(nn.Module):
         lower_indices = lower_indices_float.long() + self.feature_offset # (batch_size, in_features)
 
         indices = torch.stack((lower_indices, lower_indices + 1), dim=-1) # (batch_size, in_features, 2)
-        vals = F.embedding(indices, self.kan_weight.view(-1, self.out_features)) # (batch_size, in_features, 2, out_features)
+        vals = F.embedding(indices, self.get_interp_tensor()) # (batch_size, in_features, 2, out_features)
 
         lower_val, upper_val = vals.unbind(dim=2) # each: (batch_size, in_features, out_features)
         return torch.lerp(lower_val, upper_val, (x - lower_indices_float).unsqueeze(-1)).sum(dim=1) # (batch_size, out_features)
 
     def visualize_all_mappings(self, save_path=None):
-        interp_tensor = self.kan_weight.detach().cpu().view(self.in_features, self.num_control_points, self.out_features)
+        interp_tensor = self.get_interp_tensor().detach().cpu().view(self.in_features, self.num_control_points, self.out_features)
 
         fig, axes = plt.subplots(
             self.in_features,
