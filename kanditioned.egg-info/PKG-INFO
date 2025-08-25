@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: kanditioned
-Version: 1.0.1
+Version: 1.0.2
 Summary: Fast, Conditioned KAN
 Home-page: https://github.com/cats-marin/KANditioned
 Author: cats-marin
@@ -30,9 +30,7 @@ Dynamic: project-url
 Dynamic: requires-dist
 Dynamic: summary
 
-# KANditioned: Fast, Generalizable Training of KANs via Lookup Interpolation
-
-Training is accelerated by orders of magnitude through exploiting the structure of linear (C⁰) spline with uniformly spaced control points, where spline(x) can be calculated as a linear interpolation between the two nearest control points. This is in constrast with the typical summation often seen in B-spline, reducing the amount of computation required and enabling effectively sublinear scaling across the control points dimension.
+# KANditioned: Fast, Conditioned Training of KANs via Lookup Interpolation and Discrete Cosine Transform
 
 ## Install
 
@@ -41,7 +39,7 @@ pip install kanditioned
 ```
 
 ## Usage
-It is highly highly recommended to use this layer with torch.compile, which will provide very significant speedups, in addition to a normalization layer before each KANLayer.
+It is highly recommended to use this layer with torch.compile, which will provide very significant speedups, in addition to a normalization layer before each KANLayer.
 
 ```
 from kanditioned.kan_layer import KANLayer
@@ -51,7 +49,7 @@ layer = KANLayer(in_features=3, out_features=3, init="random_normal", num_contro
 layer.visualize_all_mappings(save_path="kan_mappings.png")
 ```
 
-### Args:
+#### Args:
 
     in_features (int) – size of each input sample
     out_features (int) – size of each output sample
@@ -62,22 +60,22 @@ layer.visualize_all_mappings(save_path="kan_mappings.png")
     num_control_points (int): Number of uniformly spaced control points per input feature. Defaults to 32.
     spline_width (float): Width of the spline's domain [-spline_width / 2, spline_width / 2]. Defaults to 4.0.
 
-### Methods:
+#### Methods:
 
     visualize_all_mappings(save_path=path[optional]) - this will plot out the shape of each spline and its corresponding input and output feature
 
 ## How This Works
 
-This implementation of KAN uses a linear (C⁰) spline, with uniformly spaced control points (see Figure 1 and Equation 1).
+Training is accelerated by orders of magnitude through exploiting the structure of the linear (C⁰) B-spline (see Fig. 1) with uniformly spaced control points. Because the intervals are uniform, evaluating spline(x) reduces to a constant-time index calculation, followed by looking up the two relevant control points and linearly interpolating between them. This contrasts with the typical summation over basis functions typically seen in splines, reducing the amount of computation required and enabling effective sublinear scaling across the control points dimension.
 
-**Figure 1.** Linear B-spline example:  
 ![Linear B-spline example](https://raw.githubusercontent.com/cats-marin/KANditioned/main/image-1.png)
 
-**Equation 1.** B-spline formula:
-<img style="height: 50px" alt="B-spline Formula" src="https://raw.githubusercontent.com/cats-marin/KANditioned/main/image.png">
+**Figure 1.** Linear B-spline example (each triangle-like shape is a basis):
 
 ## Roadmap
-- Update package with cleaned up, efficient Discrete Cosine Transform and parallel scan (prefix sum) reparameterizations. Both provide isotropic κ ~ O(1) conditioned discrete second difference penalty, as opposed to κ ~ O(N^4) conditioning for naive B-spline parameterization. This only matters if you care about regularization.
+- Update package with cleaned up, efficient Discrete Cosine Transform and parallel scan (prefix sum) parameterizations.
+    - Both provide isotropic O(1) condition scaling for the discrete second difference penalty, as opposed to O(N^4) conditioning for the naive B-spline parameterization. This only matters if you care about regularization.
+    - May add linearDCT variant first. Although it's O(N^2), it's more parallelized and optimized on GPU for small N since it's essentially a matmul with weight being a DCT matrix
 - Proper baselines against MLP and various other KAN implementations on backward and forward passes
     <!-- - https://github.com/ZiyaoLi/fast-kan -->
     <!-- - https://github.com/Blealtan/efficient-kan -->
@@ -88,7 +86,7 @@ This implementation of KAN uses a linear (C⁰) spline, with uniformly spaced co
     <!-- https://github.com/mintisan/awesome-kan -->
 - Add in feature-major variant
 - Add optimized Triton kernel
-- Clean up writing
+- Polish writing
 
 ## LICENSE
 This project is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt).
