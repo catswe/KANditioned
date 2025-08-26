@@ -1,4 +1,4 @@
-# KANditioned: Fast, Conditioned Training of KANs via Lookup Interpolation ~~and Discrete Cosine Transform (WIP)~~
+# KANditioned: Fast, Conditioned Training of KANs via Lookup Interpolation ~~and Discrete Cosine Transform (DCT WIP)~~
 
 ## Install
 
