@@ -54,6 +54,7 @@ layer.visualize_all_mappings(save_path="kan_mappings.png")
     <!-- https://github.com/mintisan/awesome-kan -->
 - Add in feature-major variant
 - Add optimized Triton kernel
+- Research adding Legendre polynomials parameterization
 - Polish writing
 
 ## Contributions Are Welcomed!
