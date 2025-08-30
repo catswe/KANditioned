@@ -11,7 +11,7 @@ pip install kanditioned
 ## Usage
 #### It is highly recommended to use this layer with torch.compile, which will provide very significant speedups (Triton kernel coming sometimes later XD but I found torch.compile to provide very satisfactory performance), in addition to a normalization layer before each KANLayer.
 
-```
+```python
 from kanditioned.kan_layer import KANLayer
 
 layer = KANLayer(in_features=3, out_features=3, init="random_normal", num_control_points=8)
