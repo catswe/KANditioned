@@ -41,7 +41,7 @@ class KANLayer(nn.Module):
         _ensure_positive_int("in_features", in_features)
         _ensure_positive_int("out_features", out_features)
         _ensure_in_set("init", init, {"random_normal", "identity", "zero"})
-        if self.init == 'identity' and in_features != out_features:
+        if init == 'identity' and in_features != out_features:
             raise ValueError("'identity' init requires in_features == out_features.")
         _ensure_positive_int("num_control_points", num_control_points)
         if not (isinstance(spline_width, (int, float)) and spline_width > 0):
@@ -59,10 +59,11 @@ class KANLayer(nn.Module):
 
         self.register_buffer("local_bias", torch.arange(num_control_points).view(1, -1, 1))
         self.register_buffer("feature_offset", torch.arange(in_features).view(1, -1) * num_control_points)
+        self.init_tensor()
 
     def get_interp_tensor(self):
         if self.variant == "B-spline":
-            self.kan_weight.view(-1, self.out_features)
+            return self.kan_weight.view(-1, self.out_features)
         elif self.variant == "parallel_scan":
             cs_r_weight = torch.cumsum(self.r_weight, dim=1) # (in_features, num_control_points, out_features)
             cs_l_weight = torch.cumsum(self.l_weight, dim=1) # (in_features, num_control_points, out_features)
@@ -81,20 +82,18 @@ class KANLayer(nn.Module):
             centered_bias = self.local_bias.float() - (self.num_control_points - 1) / 2.0
 
             if self.init == 'random_normal':
-                slopes = torch.nn.functional.normalize(
-                    torch.randn(self.in_features, self.out_features, device=self.kan_weight.device),
-                    dim=0,
-                )
+                slopes = F.normalize(torch.randn(self.in_features, self.out_features), dim=0)
             elif self.init == 'identity':
-                slopes = torch.eye(self.in_features, device=self.kan_weight.device)
+                slopes = torch.eye(self.in_features)
             elif self.init == 'zero':
-                slopes = torch.zeros(self.in_features, self.num_control_points, self.out_features)
+                slopes = torch.zeros(self.in_features, self.out_features)
 
-            with torch.no_grad():
-                self.kan_weight = nn.Parameter(centered_bias * slopes.unsqueeze(1))
+            self.kan_weight = nn.Parameter(centered_bias * slopes.unsqueeze(1))
+
         elif self.variant == "parallel_scan":
-            self.r_weight = nn.Parameter(torch.zeros(self.in_features, self.num_control_points, self.out_features)) # (in_features, num_control_points, out_features)
-            self.l_weight = nn.Parameter(torch.zeros(self.in_features, self.num_control_points, self.out_features)) # (in_features, num_control_points, out_features)        
+            self.r_weight = nn.Parameter(torch.zeros(self.in_features, self.num_control_points, self.out_features))
+            self.l_weight = nn.Parameter(torch.zeros(self.in_features, self.num_control_points, self.out_features))
+            print("Parallel scan custom init not yet supported. Please initialize weights manually.")
 
     def forward(self, x):
         # x: (batch_size, in_features)
@@ -103,11 +102,20 @@ class KANLayer(nn.Module):
         lower_indices_float = x.floor().clamp(0, self.num_control_points - 2) # (batch_size, in_features)
         lower_indices = lower_indices_float.long() + self.feature_offset # (batch_size, in_features)
 
-        indices = torch.stack((lower_indices, lower_indices + 1), dim=-1) # (batch_size, in_features, 2)
-        vals = F.embedding(indices, self.get_interp_tensor()) # (batch_size, in_features, 2, out_features)
+        if self.mode == "eager":
+            t = x - lower_indices_float # (batch_size, in_features)
+            return F.embedding_bag(
+                torch.stack((lower_indices, lower_indices + 1), dim=2).reshape(x.size(0), -1), # (batch_size, in_features * 2)
+                self.get_interp_tensor(), # (in_features * num_control_points, out_features)
+                per_sample_weights=torch.stack((1.0 - t, t), dim=2).reshape(x.size(0), -1), # (batch_size, in_features * 2)
+                mode='sum',
+            ) # (batch_size, out_features)
+        else:
+            indices = torch.stack((lower_indices, lower_indices + 1), dim=-1) # (batch_size, in_features, 2)
+            vals = F.embedding(indices, self.get_interp_tensor()) # (batch_size, in_features, 2, out_features)
 
-        lower_val, upper_val = vals.unbind(dim=2) # each: (batch_size, in_features, out_features)
-        return torch.lerp(lower_val, upper_val, (x - lower_indices_float).unsqueeze(-1)).sum(dim=1) # (batch_size, out_features)
+            lower_val, upper_val = vals.unbind(dim=2) # each: (batch_size, in_features, out_features)
+            return torch.lerp(lower_val, upper_val, (x - lower_indices_float).unsqueeze(-1)).sum(dim=1) # (batch_size, out_features)
 
     def visualize_all_mappings(self, save_path=None):
         interp_tensor = self.get_interp_tensor().detach().cpu().view(self.in_features, self.num_control_points, self.out_features)
