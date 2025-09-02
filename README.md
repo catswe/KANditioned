@@ -53,8 +53,10 @@ layer.visualize_all_mappings(save_path="kan_mappings.png")
     <!-- https://github.com/Jerry-Master/KAN-benchmarking -->
     <!-- https://github.com/KindXiaoming/pykan -->
     <!-- https://github.com/mintisan/awesome-kan -->
-- Add in feature-major variant
-- Run benchmarks and further optimize memory locality (whether feature-major variant and interleaved indices are faster)
+- Add in feature-major input variant
+- Run benchmarks and further optimize memory locality
+    - Whether feature-major input variant is faster than batch-major input variant
+    - Whether interleaved indices [l1, u1, l2, u2, ...] is faster than stacked indices [l1, l2, ..., u1, u2, ...]
 - Add optimized Triton kernel
 - Research adding Legendre polynomials parameterization
     - Preliminary: does not seem to offer much benefits or have isotropic penalty conditioning
