@@ -54,6 +54,7 @@ layer.visualize_all_mappings(save_path="kan_mappings.png")
     <!-- https://github.com/KindXiaoming/pykan -->
     <!-- https://github.com/mintisan/awesome-kan -->
 - Add in feature-major variant
+- Run benchmarks and further optimize memory locality (whether feature-major variant and interleaved indices are faster)
 - Add optimized Triton kernel
 - Research adding Legendre polynomials parameterization
     - Preliminary: does not seem to offer much benefits or have isotropic penalty conditioning
