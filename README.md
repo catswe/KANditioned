@@ -10,7 +10,7 @@ pip install kanditioned
 
 ## Usage
 > [!IMPORTANT]  
-> It is highly recommended to use this layer with torch.compile, which will provide very significant speedups (Triton kernel coming sometimes later XD but I found torch.compile to provide very satisfactory performance), in addition to a normalization layer before each KANLayer.
+> It is highly recommended to use this layer with torch.compile, which will provide very significant speedups (Triton kernel is coming sometimes later, but I found torch.compile to provide very satisfactory performance), in addition to a normalization layer before each KANLayer.
 
 ```python
 from kanditioned.kan_layer import KANLayer
