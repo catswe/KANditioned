@@ -48,7 +48,7 @@ class KANLayer(nn.Module):
             raise ValueError(f"spline_width must be > 0, got {spline_width}")
         _ensure_in_set("variant", variant, {"B-spline", "parallel_scan", "DCT"})
         if variant == "DCT":
-            raise NotImplementedError("DCT variant is not implemented.")
+            raise NotImplementedError("DCT variant is not yet implemented.")
 
         self.in_features = in_features
         self.out_features = out_features
@@ -74,8 +74,10 @@ class KANLayer(nn.Module):
             r_interp = (self.local_bias * cs_r_weight - cs_r_weight_bias_prod) # type: ignore (in_features, num_control_points, out_features)
             l_interp = (cs_l_weight_bias_prod[:, -1:, :] - cs_l_weight_bias_prod) - self.local_bias * (cs_l_weight[:, -1:, :] - cs_l_weight) # type: ignore (in_features, num_control_points, out_features)
             return (r_interp + l_interp).view(-1, self.out_features) # (in_features * num_control_points, out_features)
+        elif self.variant == "DCT":
+            raise NotImplementedError("DCT variant is not yet implemented.")
 
-        raise ValueError("Variant must be either 'B-spline', 'parallel_scan', or 'DCT")
+        raise ValueError("Variant must be either 'B-spline' or 'parallel_scan'")
 
     def init_tensor(self):
         if self.variant == "B-spline":
