@@ -16,20 +16,22 @@ pip install kanditioned
 from kanditioned.kan_layer import KANLayer
 
 layer = KANLayer(in_features=3, out_features=3, init="random_normal", num_control_points=8)
-
 layer.visualize_all_mappings(save_path="kan_mappings.png")
 ```
+### Arguments
 
-#### Args:
-
-    in_features (int) – size of each input sample
-    out_features (int) – size of each output sample
-    init (str) - initialization method:
-        "random_normal": Slope of each spline is drawn from a normal distribution and normalized so that each "neuron" has unit "weight" norm.
-        "identity": Identity mapping (requires in_features == out_features). At initialization, the layer's output is the same as the inputs.
-        "zero": All splines are init zero.
-    num_control_points (int): Number of uniformly spaced control points per input feature. Defaults to 32.
-    spline_width (float): Width of the spline's domain [-spline_width / 2, spline_width / 2]. Defaults to 4.0.
+- **in_features** (int)  
+  Size of each input sample.
+- **out_features** (int)  
+  Size of each output sample.
+- **init** (str) – initialization method:  
+  - `"random_normal"`: Slopes drawn from a normal distribution, then normalized so each “neuron” has unit weight norm.  
+  - `"identity"`: Identity mapping (requires `in_features == out_features`). Output initially equals input.  
+  - `"zero"`: All splines initialized to zero.
+- **num_control_points** (int, default = `32`)  
+  Number of uniformly spaced control points per input feature.
+- **spline_width** (float, default = `4.0`)  
+  Domain of the spline: `[-spline_width / 2, spline_width / 2]`. Beyond that, the spline will linearly extrapolate.
 
 #### Methods:
 
