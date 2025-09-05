@@ -59,6 +59,7 @@ layer.visualize_all_mappings(save_path="kan_mappings.png")
     - Feature-major input variant versus batch-major input variant
     - Interleaved indices [l1, u1, l2, u2, ...] versus stacked indices [l1, l2, ..., u1, u2, ...]
 - Add optimized Triton kernel
+- Update visualize_all_mappings method to something like .plot with option for plotting everything
 - Research adding Legendre polynomials parameterization
     - Preliminary: does not seem to offer much benefits or have isotropic penalty conditioning
 - Polish writing
