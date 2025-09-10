@@ -45,7 +45,7 @@ layer.visualize_all_mappings(save_path="kan_mappings.png")
 
 ## Roadmap
 - ~~Use F.embedding_bag~~
-- Update package with cleaned up, efficient Discrete Cosine Transform and parallel scan (prefix sum) parameterizations.
+- Update package with cleaned up, efficient Discrete Cosine Transform (with rank-2 correction) and parallel scan (prefix sum) parameterizations.
     - Both provide isotropic O(1) condition scaling for the discrete second difference penalty, as opposed to O(N^4) conditioning for the naive B-spline parameterization. This only matters if you care about regularization.
     - May add linearDCT variant first. Although it's O(N^2), it's more parallelized and optimized on GPU for small N since it's essentially a matmul with weight being a DCT matrix
 - Proper baselines against MLP and various other KAN implementations on backward and forward passes
