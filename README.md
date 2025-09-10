@@ -56,7 +56,7 @@ layer.visualize_all_mappings(save_path="kan_mappings.png")
     <!-- https://github.com/Jerry-Master/KAN-benchmarking -->
     <!-- https://github.com/KindXiaoming/pykan -->
     <!-- https://github.com/mintisan/awesome-kan -->
-- Add sorting on indices as an option (potentially radix sort, which is common optimization on embedding) to improve computational time through global memory "coalesced" access
+- Add sorting on indices and unsorting as an option (potentially radix sort, which is common optimization on embedding) to improve computational time through global memory "coalesced" access
 - Add in feature-major input variant
 - May change to either unfold or as_strided (slight performance improvement)
 - Run benchmarks and further optimize memory locality
