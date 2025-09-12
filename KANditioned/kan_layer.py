@@ -34,7 +34,8 @@ class KANLayer(nn.Module):
             init: str,
             num_control_points: int = 32,
             spline_width: float = 4.0,
-            variant: str="B-spline"
+            variant: str="B-spline",
+            impl: str="embedding_bag",
     ) -> None:
         super().__init__()
 
@@ -49,6 +50,7 @@ class KANLayer(nn.Module):
         _ensure_in_set("variant", variant, {"B-spline", "parallel_scan", "DCT"})
         if variant == "DCT":
             raise NotImplementedError("DCT variant is not yet implemented.")
+        _ensure_in_set("impl", impl, {"embedding_bag", "embedding"})
 
         self.in_features = in_features
         self.out_features = out_features
@@ -56,8 +58,9 @@ class KANLayer(nn.Module):
         self.num_control_points = num_control_points
         self.spline_width = spline_width
         self.variant = variant
+        self.impl = impl
 
-        self.register_buffer("local_bias", torch.arange(num_control_points).view(1, -1, 1))
+        self.register_buffer("local_bias", torch.arange(num_control_points).view(1, -1, 1)) # TODO:fix this so that it's only registered for parallel scan variant
         self.register_buffer("feature_offset", torch.arange(in_features).view(1, -1) * num_control_points)
         self.init_tensor()
 
@@ -104,7 +107,7 @@ class KANLayer(nn.Module):
         lower_indices_float = x.floor().clamp(0, self.num_control_points - 2) # (batch_size, in_features)
         lower_indices = lower_indices_float.long() + self.feature_offset # (batch_size, in_features)
 
-        if self.mode == "eager":
+        if self.impl == "embedding_bag":
             t = x - lower_indices_float # (batch_size, in_features)
             return F.embedding_bag(
                 torch.stack((lower_indices, lower_indices + 1), dim=2).reshape(x.size(0), -1), # (batch_size, in_features * 2)
@@ -112,7 +115,7 @@ class KANLayer(nn.Module):
                 per_sample_weights=torch.stack((1.0 - t, t), dim=2).reshape(x.size(0), -1), # (batch_size, in_features * 2)
                 mode='sum',
             ) # (batch_size, out_features)
-        else:
+        elif self.impl == "embedding":
             indices = torch.stack((lower_indices, lower_indices + 1), dim=-1) # (batch_size, in_features, 2)
             vals = F.embedding(indices, self.get_interp_tensor()) # (batch_size, in_features, 2, out_features)
 

@@ -4,6 +4,8 @@ pyproject.toml
 setup.py
 KANditioned/__init__.py
 KANditioned/kan_layer.py
+kanditioned/__init__.py
+kanditioned/kan_layer.py
 kanditioned.egg-info/PKG-INFO
 kanditioned.egg-info/SOURCES.txt
 kanditioned.egg-info/dependency_links.txt
