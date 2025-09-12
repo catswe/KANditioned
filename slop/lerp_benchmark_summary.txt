@@ -1,0 +1,4 @@
+[cpu | float32 | large] fastest: bmm @ 0.313 ms (x1.88 vs baseline), max_abs_diff best=1.717e-05
+[cpu | float32 | medium] fastest: bmm @ 0.136 ms (x1.16 vs baseline), max_abs_diff best=6.199e-06
+[cpu | float32 | small] fastest: baseline @ 0.059 ms (x1.00 vs baseline), max_abs_diff best=0.000e+00
+[cpu | float32 | tiny] fastest: baseline @ 0.038 ms (x1.00 vs baseline), max_abs_diff best=0.000e+00
