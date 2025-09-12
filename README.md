@@ -73,7 +73,7 @@ layer.visualize_all_mappings(save_path="kan_mappings.png")
     - Preliminary: does not seem to offer much benefits or have isotropic penalty conditioning
 - Polish writing
 
-## Under Active Development. Open To Collaborators. Contributions Are Welcomed!
+## Open To Collaborators. Contributions Are Welcomed!
 
 ## LICENSE
 This project is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt).
