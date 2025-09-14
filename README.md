@@ -35,13 +35,13 @@ Initialization method:
 
 - **`"random_normal"`**
 
-  > Spline slopes drawn from a normal distribution, then normalized so each “neuron” has unit weight norm.  
+  > Each spline initialized to a linear line with its slope drawn from a normal distribution, then normalized so each “neuron” has unit weight norm.  
 - **`"identity"`**
   
-  > Spline slopes initialized to one (requires `in_features == out_features`). Output initially equals input.  
+  > Each spline initialized to a linear line with slope one (requires `in_features == out_features`). Output initially equals input.  
 - **`"zero"`**
 
-  > Spline slopes initialized to zero.  
+  > Each spline initialized to a linear line with slope zero.  
 
 ---
 
