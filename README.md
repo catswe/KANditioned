@@ -15,22 +15,22 @@ pip install kanditioned
 ```python
 from kanditioned.kan_layer import KANLayer
 
-layer = KANLayer(in_features=3, out_features=3, init="random_normal", num_control_points=8)
+layer = KANLayer(in_features=3, out_features=3, init="random_normal", num_control_points=8, spline_width=4.0)
 layer.visualize_all_mappings(save_path="kan_mappings.png")
 ```
 ## Arguments
 
-### **in_features** (`int`)  
+#### **in_features** (`int`)  
 Size of each input sample.
 
 ---
 
-### **out_features** (`int`)  
+#### **out_features** (`int`)  
 Size of each output sample.
 
 ---
 
-### **init** (`str`)  
+#### **init** (`str`)  
 Initialization method:  
 
 - **`"random_normal"`**
@@ -45,31 +45,31 @@ Initialization method:
 
 ---
 
-### **num_control_points** (`int`, default = `32`)  
+#### **num_control_points** (`int`, default = `32`)  
 Number of uniformly spaced control points per input feature.
 
 ---
 
-### **spline_width** (`float`, default = `4.0`)  
+#### **spline_width** (`float`, default = `4.0`)  
 Domain the spline control points are uniformly defined on: `[-spline_width/ 2, spline_width / 2]`. Outside the domain, the spline will linearly extrapolate.
 
 ---
 
-### **impl** (`str`, default = `"embedding_bag"`)  
+#### **impl** (`str`, default = `"embedding_bag"`)  
 Implementation choice:  
 
-- **`"embedding_bag"`** – Uses `F.embedding_bag`.  
-  > Much faster for inference with `torch.compile` enabled, or for training/inference without `torch.compile`.
+- **`"embedding_bag"`**
+  > Much faster for inference with `torch.compile` enabled, or for either training or inference without `torch.compile`.
 
-- **`"embedding"`** – Uses `F.embedding`.  
-  > Appears to be somewhat faster for training with `torch.compile` enabled.  
+- **`"embedding"`**
+  > Appears to be somewhat faster when training with `torch.compile` enabled.  
 
 > [!NOTE]
 > Experiment with both to achieve peak performance.
 
 ## Methods
 
-### **visualize_all_mappings**(save_path: `str`, optional)
+#### **visualize_all_mappings**(save_path: `str`, optional)
 Plots the shape of each spline along with its corresponding input and output feature.  
 
 ## Figure
