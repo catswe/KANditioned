@@ -10,7 +10,7 @@ pip install kanditioned
 
 ## Usage
 > [!IMPORTANT]  
-> It is highly recommended to use this layer with torch.compile, which will provide very significant speedups (Triton kernel is coming sometimes later, but I found torch.compile to provide very satisfactory performance), in addition to a normalization layer before each KANLayer.
+> It is highly recommended to use this layer with torch.compile, which may provide very significant speedups, in addition to a normalization layer before each KANLayer. Custom kernel is coming sometimes later. Stay tuned.
 
 ```python
 from kanditioned.kan_layer import KANLayer
@@ -33,9 +33,15 @@ Size of each output sample.
 ### **init** (`str`)  
 Initialization method:  
 
-- **`"random_normal"`** – Slopes drawn from a normal distribution, then normalized so each “neuron” has unit weight norm.  
-- **`"identity"`** – Identity mapping (requires `in_features == out_features`). Output initially equals input.  
-- **`"zero"`** – All splines initialized to zero.  
+- **`"random_normal"`**
+
+  > Spline slopes drawn from a normal distribution, then normalized so each “neuron” has unit weight norm.  
+- **`"identity"`**
+  
+  > Spline slopes initialized to one (requires `in_features == out_features`). Output initially equals input.  
+- **`"zero"`**
+
+  > Spline slopes initialized to zero.  
 
 ---
 
@@ -58,7 +64,8 @@ Implementation choice:
 - **`"embedding"`** – Uses `F.embedding`.  
   > Appears to be somewhat faster for training with `torch.compile` enabled.  
 
-Experiment with both to achieve peak performance.
+> [!NOTE]
+> Experiment with both to achieve peak performance.
 
 ## Methods
 
