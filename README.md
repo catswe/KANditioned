@@ -18,28 +18,52 @@ from kanditioned.kan_layer import KANLayer
 layer = KANLayer(in_features=3, out_features=3, init="random_normal", num_control_points=8)
 layer.visualize_all_mappings(save_path="kan_mappings.png")
 ```
-### Arguments
+## Arguments
 
-- **in_features** (int)  
-  Size of each input sample.
-- **out_features** (int)  
-  Size of each output sample.
-- **init** (str) – initialization method:  
-  - `"random_normal"`: Slopes drawn from a normal distribution, then normalized so each “neuron” has unit weight norm.
-  - `"identity"`: Identity mapping (requires `in_features == out_features`). Output initially equals input.
-  - `"zero"`: All splines initialized to zero.
-- **num_control_points** (int, default = `32`)  
-  Number of uniformly spaced control points per input feature.
-- **spline_width** (float, default = `4.0`)  
-  Domain of the spline: `[-spline_width / 2, spline_width / 2]`. Beyond that, the spline will linearly extrapolate.
-- **impl** (str, default = `embedding_bag`)
-  Note: F.embedding_bag implementation appears to be much faster when used for inference with torch.compile enabled or when used for inference/training without torch.compile. However, F.embedding appears to be somewhat faster than F.embedding_bag when used for training with torch.compile enabled. Experiment with either implementation as necessary to achieve peak performance.
-  - `"embedding_bag"`: Implement the layer using F.embedding_bag.
-  - `"embedding"`: Implement the layer using F.embedding.
+### **in_features** (`int`)  
+Size of each input sample.
 
-#### Methods:
+---
 
-    visualize_all_mappings(save_path=path[optional]) - this will plot out the shape of each spline and its corresponding input and output feature
+### **out_features** (`int`)  
+Size of each output sample.
+
+---
+
+### **init** (`str`)  
+Initialization method:  
+
+- **`"random_normal"`** – Slopes drawn from a normal distribution, then normalized so each “neuron” has unit weight norm.  
+- **`"identity"`** – Identity mapping (requires `in_features == out_features`). Output initially equals input.  
+- **`"zero"`** – All splines initialized to zero.  
+
+---
+
+### **num_control_points** (`int`, default = `32`)  
+Number of uniformly spaced control points per input feature.
+
+---
+
+### **spline_width** (`float`, default = `4.0`)  
+Domain the spline control points are uniformly defined on: `[-spline_width/ 2, spline_width / 2]`. Outside the domain, the spline will linearly extrapolate.
+
+---
+
+### **impl** (`str`, default = `"embedding_bag"`)  
+Implementation choice:  
+
+- **`"embedding_bag"`** – Uses `F.embedding_bag`.  
+  > Much faster for inference with `torch.compile` enabled, or for training/inference without `torch.compile`.
+
+- **`"embedding"`** – Uses `F.embedding`.  
+  > Appears to be somewhat faster for training with `torch.compile` enabled.  
+
+Experiment with both to achieve peak performance.
+
+## Methods
+
+### **visualize_all_mappings**(save_path: `str`, optional)
+Plots the shape of each spline along with its corresponding input and output feature.  
 
 ## Figure
 
