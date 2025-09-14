@@ -58,10 +58,10 @@ Domain the spline control points are uniformly defined on: `[-spline_width/ 2, s
 #### **impl** (`str`, default = `"embedding_bag"`)  
 Implementation choice:  
 
-- **`"embedding_bag"`** – Uses `F.embedding_bag`.
+- **`"embedding_bag"`**
   > Much faster for inference with `torch.compile` enabled, or for either training or inference without `torch.compile`.
 
-- **`"embedding"`** – Uses `F.embedding`.  
+- **`"embedding"`**
   > Appears to be somewhat faster when training with `torch.compile` enabled.  
 
 > [!NOTE]
@@ -69,7 +69,7 @@ Implementation choice:
 
 ## Methods
 
-### **visualize_all_mappings**(save_path: `str`, optional)
+#### **visualize_all_mappings**(save_path: `str`, optional)
 Plots the shape of each spline along with its corresponding input and output feature.  
 
 ## Figure
