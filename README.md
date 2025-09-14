@@ -15,7 +15,7 @@ pip install kanditioned
 ```python
 from kanditioned.kan_layer import KANLayer
 
-layer = KANLayer(in_features=3, out_features=3, init="random_normal", num_control_points=8)
+layer = KANLayer(in_features=3, out_features=3, init="random_normal", num_control_points=8, spline_width=4.0)
 layer.visualize_all_mappings(save_path="kan_mappings.png")
 ```
 ## Arguments
