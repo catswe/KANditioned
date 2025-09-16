@@ -51,7 +51,7 @@ Number of uniformly spaced control points per input feature.
 ---
 
 #### **spline_width** (`float`, default = `4.0`)  
-Domain the spline control points are uniformly defined on: `[-spline_width/ 2, spline_width / 2]`. Outside the domain, the spline will linearly extrapolate.
+Domain the spline control points are uniformly defined on: `[-spline_width / 2, spline_width / 2]`. Outside the domain, the spline will linearly extrapolate.
 
 ---
 
