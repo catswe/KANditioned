@@ -81,6 +81,7 @@ Plots the shape of each spline along with its corresponding input and output fea
 ## Roadmap (more like TODO list XD)
 - ~~Use F.embedding_bag~~
 - Update doc for variant and other new parameters introduced
+- Support sparse gradients
 - Update package with cleaned up, efficient Discrete Cosine Transform (with rank-2 correction) and parallel scan (prefix sum) parameterizations.
     - Both provide isotropic O(1) condition scaling for the discrete second difference penalty, as opposed to O(N^4) conditioning for the naive B-spline parameterization. This only matters if you care about regularization.
     - May add linearDCT variant first. Although it's O(N^2), it's more parallelized and optimized on GPU for small N since it's essentially a matmul with weight being a DCT matrix
