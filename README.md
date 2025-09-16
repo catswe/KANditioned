@@ -78,7 +78,7 @@ Plots the shape of each spline along with its corresponding input and output fea
 
 **Figure 1.** Linear B-spline example (each triangle-like shape is a basis):
 
-## Roadmap
+## Roadmap (more like TODO list XD)
 - ~~Use F.embedding_bag~~
 - Update doc for variant and other new parameters introduced
 - Update package with cleaned up, efficient Discrete Cosine Transform (with rank-2 correction) and parallel scan (prefix sum) parameterizations.
@@ -95,6 +95,8 @@ Plots the shape of each spline along with its corresponding input and output fea
 - Add sorting on indices and unsorting as an option (potentially radix sort, which is common optimization on embedding) to improve computational time through global memory "coalesced" access
 - Add in feature-major input variant
 - May change to either unfold or as_strided (slight performance improvement)
+- Benchmark against NanoGPT
+- Make announcements on various platforms
 - Run benchmarks and further optimize memory locality
     - Feature-major input variant versus batch-major input variant
     - Interleaved indices [l1, u1, l2, u2, ...] versus stacked indices [l1, l2, ..., u1, u2, ...]
