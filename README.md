@@ -1,6 +1,8 @@
 # KANditioned: Fast, Conditioned Training of Kolmogorov-Arnold Networks (KANs) via Lookup Interpolation ~~and Discrete Cosine Transform~~
 
-Training is accelerated by orders of magnitude through exploiting the structure of the linear (C⁰) B-spline (see Fig. 1) with uniformly spaced control points. Because the intervals are uniform, evaluating spline(x) reduces to a constant-time index calculation, followed by looking up the two relevant control points and linearly interpolating between them. This contrasts with the typical summation over basis functions typically seen in splines, reducing the amount of computation required and enabling effectively sublinear scaling across the control points dimension. This fits within the framework of conditional computation, albeit at a more granular level compared to Mixture of Experts (MoEs), the most popular form of conditional computation.
+Training is accelerated by orders of magnitude through exploiting the structure of the linear (C⁰) B-spline (see Fig. 1) with uniformly spaced control points. Because the intervals are uniform, evaluating spline(x) reduces to a constant-time index calculation, followed by looking up the two relevant control points and linearly interpolating between them. This contrasts with the typical summation over basis functions typically seen in splines, reducing the amount of computation required and enabling effectively sublinear scaling across the control points dimension.
+
+This fits within the framework of conditional computation, albeit at a more granular level compared to Mixture of Experts (MoEs), the most popular form of conditional computation.
 
 <!-- Probably can add some jank about being more energy efficient per parameter compared to MLP with similar parameter count and biological similarity, since KAN can be argued as being a bit more similar to how the brain work compared to MLP, given that it learns its own nonlinear activation -->
 
