@@ -83,6 +83,7 @@ Plots the shape of each spline along with its corresponding input and output fea
 ## Roadmap (more like TODO list XD)
 - ~~Use F.embedding_bag~~
 - Add support for sparse matmul with various sparse storage formats
+- Add support for index select with lerp implementation and investigate index_add
 - Update doc for variant and other new parameters introduced
 - Support sparse gradients
 - Update package with cleaned up, efficient Discrete Cosine Transform (with rank-2 correction) and parallel scan (prefix sum) parameterizations.
