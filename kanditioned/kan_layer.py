@@ -122,10 +122,6 @@ class KANLayer(nn.Module):
             lower_val, upper_val = vals.unbind(dim=2) # each: (batch_size, in_features, out_features)
             return torch.lerp(lower_val, upper_val, (x - lower_indices_float).unsqueeze(-1)).sum(dim=1) # (batch_size, out_features)
         elif self.impl == "sparse_matmul":
-            x = (x + self.spline_width / 2) * (self.num_control_points - 1) / self.spline_width
-            lower_indices_float = x.floor().clamp(0, self.num_control_points - 2)
-
-            lower_indices = lower_indices_float.long() + self.feature_offset
             interpolation_weight = x - lower_indices_float
 
             nnz_per_row = self.in_features * 2
