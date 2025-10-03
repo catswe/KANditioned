@@ -35,7 +35,7 @@ class KANLayer(nn.Module):
             num_control_points: int = 32,
             spline_width: float = 4.0,
             variant: str="B-spline",
-            impl: str="embedding_bag",
+            impl: str="sparse_matmul",
     ) -> None:
         super().__init__()
 
@@ -50,7 +50,7 @@ class KANLayer(nn.Module):
         _ensure_in_set("variant", variant, {"B-spline", "parallel_scan", "DCT"})
         if variant == "DCT":
             raise NotImplementedError("DCT variant is not yet implemented.")
-        _ensure_in_set("impl", impl, {"embedding_bag", "embedding"})
+        _ensure_in_set("impl", impl, {"embedding_bag", "embedding", "sparse_matmul"})
 
         self.in_features = in_features
         self.out_features = out_features
@@ -121,6 +121,21 @@ class KANLayer(nn.Module):
 
             lower_val, upper_val = vals.unbind(dim=2) # each: (batch_size, in_features, out_features)
             return torch.lerp(lower_val, upper_val, (x - lower_indices_float).unsqueeze(-1)).sum(dim=1) # (batch_size, out_features)
+        elif self.impl == "sparse_matmul":
+            x = (x + self.spline_width / 2) * (self.num_control_points - 1) / self.spline_width
+            lower_indices_float = x.floor().clamp(0, self.num_control_points - 2)
+
+            lower_indices = lower_indices_float.long() + self.feature_offset
+            interpolation_weight = x - lower_indices_float
+
+            nnz_per_row = self.in_features * 2
+            x_sparse = torch.sparse_csr_tensor(
+                torch.arange(0, (x.size(0) + 1) * nnz_per_row, nnz_per_row, device=x.device),
+                torch.stack([lower_indices, lower_indices + 1], dim=-1).flatten(),
+                torch.stack([1.0 - interpolation_weight, interpolation_weight], dim=-1).flatten(),
+                size=(x.size(0), self.in_features * self.num_control_points),
+            )
+            return torch.sparse.mm(x_sparse, self.kan_weight)
 
     def visualize_all_mappings(self, save_path=None):
         interp_tensor = self.get_interp_tensor().detach().cpu().view(self.in_features, self.num_control_points, self.out_features)
