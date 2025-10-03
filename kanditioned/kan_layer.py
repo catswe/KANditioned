@@ -35,7 +35,7 @@ class KANLayer(nn.Module):
             num_control_points: int = 32,
             spline_width: float = 4.0,
             variant: str="B-spline",
-            impl: str="sparse_matmul",
+            impl: str="sparse_matmul_csr",
     ) -> None:
         super().__init__()
 
@@ -50,7 +50,7 @@ class KANLayer(nn.Module):
         _ensure_in_set("variant", variant, {"B-spline", "parallel_scan", "DCT"})
         if variant == "DCT":
             raise NotImplementedError("DCT variant is not yet implemented.")
-        _ensure_in_set("impl", impl, {"embedding_bag", "embedding", "sparse_matmul"})
+        _ensure_in_set("impl", impl, {"embedding_bag", "embedding", "sparse_matmul_csr"})
 
         self.in_features = in_features
         self.out_features = out_features
@@ -121,7 +121,7 @@ class KANLayer(nn.Module):
 
             lower_val, upper_val = vals.unbind(dim=2) # each: (batch_size, in_features, out_features)
             return torch.lerp(lower_val, upper_val, (x - lower_indices_float).unsqueeze(-1)).sum(dim=1) # (batch_size, out_features)
-        elif self.impl == "sparse_matmul":
+        elif self.impl == "sparse_matmul_csr":
             interpolation_weight = x - lower_indices_float
 
             nnz_per_row = self.in_features * 2
