@@ -1,4 +1,4 @@
-# KANditioned: Fast Training of Kolmogorov-Arnold Networks (KANs) via Dynamic Sparse Matrix Multiplication
+# KANditioned: Fast Training of Kolmogorov-Arnold Networks (KANs) via Dynamic Input-Indexed Sparse Matrix Multiplication
 
 <!-- KANditioned: Fast, Conditioned Training of Kolmogorov-Arnold Networks (KANs) via Dynamic Sparse Matrix Multiplication and Discrete Cosine Transform (DCT WIP) -->
 
