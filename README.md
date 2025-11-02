@@ -114,11 +114,12 @@ Plots the shape of each spline along with its corresponding input and output fea
     - Interleaved indices [l1, u1, l2, u2, ...] versus stacked indices [l1, l2, ..., u1, u2, ...]
 - Add optimized Triton kernel
 - Update visualize_all_mappings method to something like .plot with option for plotting everything
-- Add a nice looking figure
-- Check out https://github.com/NVIDIA/cuEmbed
+- Add a nice-looking figure
+- Add autograd in
+- ~~Check out https://github.com/NVIDIA/cuEmbed~~
 - Research adding Legendre polynomials parameterization
-    - Preliminary: does not seem to offer much benefits or have isotropic penalty conditioning
-- Experiment with inputs bucketing instead of index-based calculation
+    - Preliminary: does not seem to offer many benefits or have isotropic penalty conditioning
+- Experiment with input bucketing instead of index-based calculation (torch.bucketize)
 - Add similar papers in
 - Polish writing
 
