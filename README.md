@@ -8,6 +8,8 @@ Going one step further, we reinterpret this lookup interpolation approach as a d
 
 <!-- Probably can add some jank about being more energy efficient per parameter compared to MLP with similar parameter count and biological similarity, since KAN can be argued as being a bit more similar to how the brain works compared to MLP, given that it learns its own nonlinear activation and the brain does conditional computation, especially with MoEs and others -->
 
+#### [Notebook representing KAN as a matrix multiply while being more efficient than MLP](https://colab.research.google.com/drive/1dqSpaA_FvedC5Gajm86i65LRA9p8rxsE)
+
 ## Install
 
 ```
