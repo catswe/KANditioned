@@ -115,7 +115,7 @@ Plots the shape of each spline along with its corresponding input and output fea
 - Add optimized Triton kernel
 - Update visualize_all_mappings method to something like .plot with option for plotting everything
 - Add a nice-looking figure
-- Add autograd in
+- Add autograd backward impl. in
 - ~~Check out https://github.com/NVIDIA/cuEmbed~~
 - Research adding Legendre polynomials parameterization
     - Preliminary: does not seem to offer many benefits or have isotropic penalty conditioning
