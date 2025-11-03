@@ -6,6 +6,8 @@ Kolmogorov-Arnold Networks (KANs) training and inference are accelerated by orde
 
 Going one step further, we reinterpret this lookup interpolation approach as a dynamic input-indexed sparse-dense matrix multiplication (SpMM), squeezing out additional performance through cuSPARSE, a highly optimized CUDA library. This computational approach falls within the framework of conditional computation, albeit at a more granular level compared to Mixture of Experts (MoEs), the most popular form of conditional computation.
 
+A special version of KAN with "5 control points" can utilize 2:4 semi-structured sparsity acceleration on Ampere and newer NVIDIA architectures. This is a work in progress. See minimal.py to gain a general understanding.
+
 <!-- Probably can add some jank about being more energy efficient per parameter compared to MLP with similar parameter count and biological similarity, since KAN can be argued as being a bit more similar to how the brain works compared to MLP, given that it learns its own nonlinear activation and the brain does conditional computation, especially with MoEs and others -->
 
 #### [Notebook representing KAN as a matrix multiply while being more efficient than MLP](https://colab.research.google.com/drive/1dqSpaA_FvedC5Gajm86i65LRA9p8rxsE)
