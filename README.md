@@ -94,7 +94,8 @@ Plots the shape of each spline along with its corresponding input and output fea
 - ~~Use F.embedding_bag~~
 - ~~Add CSR sparse-dense matmul implementation~~
 - Add dense matmul version
-- Add 2:4 semi-structured sparsity version for num_control_points = 4
+- Add 2:4 semi-structured sparsity version for num_control_points = 5
+- Investigate swapping the linear layer with KAN to increase capacity without retraining
 - Check out other sparse storage formats for sparse matmul
 - Add support for index select with lerp implementation and investigate index_add
 - Update doc for variant and other new parameters introduced
