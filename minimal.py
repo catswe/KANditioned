@@ -8,8 +8,23 @@ class KANLayer(nn.Linear):
     """Zero-centered spline version. Minimal version with no spline visualization, custom init, or error checking.
     TODO: Implement custom backward pass to reduce memory pressure and 2:4 sparse semi-structured tensor."""
 
-    def __init__(self, in_features: int, out_features: int, num_control_points: int = 5, spline_width: float = 3.0, bias: bool=True):
-        super().__init__(in_features, out_features, bias=bias)
+    def __init__(
+            self,
+            in_features: int, 
+            out_features: int,
+            bias: bool=True,
+            device=None,
+            dtype=None,
+            num_control_points: int = 5,
+            spline_width: float = 3.0
+    ) -> None:
+        super().__init__(
+            in_features,
+            out_features, 
+            bias=bias,
+            device=device,
+            dtype=dtype
+        )
         if num_control_points % 2 == 0 or num_control_points < 3:
             raise ValueError("num_control_points must be an odd value greater than or equal to 3.")
 
