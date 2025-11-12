@@ -8,7 +8,7 @@ Going one step further, we reinterpret this lookup interpolation approach as a d
 
 # Misc
 
-A special version of KAN with "5 control points" can utilize 2:4 semi-structured sparsity acceleration on Ampere and newer NVIDIA architectures. This is a work in progress. See minimal.py to gain a general understanding. This also has potential quantization benefits (untested) as interpolation weights in general are from 0 to 1, and each spline only uses 2 parameters per sample
+A special version of KAN with "5 control points" can utilize 2:4 semi-structured sparsity acceleration on Ampere and newer NVIDIA architectures. This is a work in progress. See minimal.py to gain a general understanding. This also has potential quantization benefits (untested) as interpolation weights in general are from 0 to 1, and each spline only uses 2 active parameters per sample. This layer can take advantage of  NVIDIA paired 4:8 for e2m1, unlocking potential acceleration at low quantization.
 
 <!-- Probably can add some jank about being more energy efficient per parameter compared to MLP with similar parameter count and biological similarity, since KAN can be argued as being a bit more similar to how the brain works compared to MLP, given that it learns its own nonlinear activation and the brain does conditional computation, especially with MoEs and others -->
 
